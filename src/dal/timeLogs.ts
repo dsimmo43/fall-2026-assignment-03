@@ -1,12 +1,12 @@
 // TODO: Student implementation - Part 2: DAL for time logs
 
-import { db } from "../db/database.js";
+import { db, TimeLog } from "../db/database.js";
 
 export async function insertTimeLog(
   ticketId: number,
   userId: number,
   hours: number,
-): Promise<any> {
+): Promise<TimeLog> {
   // TODO: Student implementation
   return await db
     .insertInto('time_logs')
