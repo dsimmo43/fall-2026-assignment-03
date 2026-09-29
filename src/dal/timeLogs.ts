@@ -29,5 +29,5 @@ export async function getTotalHoursForTicket(
     .where('ticket_id', '=', ticketId)
     .executeTakeFirst();
   
-  return result?.total_hours ?? 0;
+  return result?.total_hours !== undefined ? Number(result.total_hours) : 0;
 }
