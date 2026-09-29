@@ -6,6 +6,10 @@ import {
     updateTicketStatus,
 } from '../dal/tickets.js';
 import authMiddleware from '../middleware/auth.js';
+import {
+    insertTimeLog,
+    getTotalHoursForTicket,
+} from '../dal/timeLogs.js';
 
 const router = Router();
 
@@ -59,6 +63,23 @@ router.patch('/:id/status', authMiddleware, async (req, res) => {
 
 // TODO: Student implementation - Part 2: Time Log Routes
 // POST /tickets/:id/time
-// GET /tickets/:id/time
+router.post('/:id/time', authMiddleware, async (req, res) => {
+    const id = Number(req.params.id);
+    const { hours } = req.body;
+    const user_id = res.locals.userId;
 
+    const timeLog = await insertTimeLog(id, user_id, hours);
+    res.status(201).json(timeLog);
+});
+
+// GET /tickets/:id/time
+router.get('/:id/time', async (req, res) => {
+    const id = Number(req.params.id);
+    const totalHours = await getTotalHoursForTicket(id);
+    
+    res.json({
+        ticket_id: id,
+        total_hours: totalHours,
+    });
+});
 export default router;
